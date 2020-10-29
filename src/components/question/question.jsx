@@ -2,7 +2,7 @@ import React from 'react';
 
 
 const Question = ({question}) => {
-    console.log(question)
+  
     return (
         <div>
             {question.question}
