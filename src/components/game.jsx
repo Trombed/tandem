@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import './style.css';
 import Quiz from './quiz/quiz';
-import Splash from './splash/splash'
 import GameOver from './gameover/gameover'
 
 const Game = () => {

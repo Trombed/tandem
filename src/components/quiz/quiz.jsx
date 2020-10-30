@@ -16,25 +16,7 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
             return;
         };
    
-        // setAnimation(false)
-        randomize();
-    }, [curNum])
-    
-    let renderAns = answer.map( (el,idx) => {
-        return (
-                <div onClick={ e => submitAnswer(e)}
-                className={`answer_button`}
-        
-                key={idx}
-                data-answer={el}
-                >  
-                {idx+1})  {el}
-                </div>
-        )
-    })
-
-    //randomize answers array
-    const randomize = () => {
+        //randomize answer array
         let result = [data[curNum].correct, ...data[curNum].incorrect]
         for (let i = result.length-1; i >= 0; i--) {
             let j = Math.floor(Math.random() * (i+1));
@@ -42,7 +24,21 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
             [result[i], result[j]] = [result[j], result[i]]
         }
         setAnswer(result)
-    }
+    }, [curNum])
+    
+    let renderAns = answer.map( (el,idx) => {
+        return (
+                <div onClick={ e => submitAnswer(e)}
+                    className={`answer_button`} 
+                    key={idx}
+                    data-answer={el}
+                >  
+                    {idx+1})  {el}
+                </div>
+        )
+    })
+
+
 
     // const submitAnswer = async = (e) => {
     async function submitAnswer(e) {
@@ -92,7 +88,7 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
             <div className="quiz_container_2">
                 <div className="quiz_question">
                     <div className="show_correct">
-                        
+                      {/* using css to show circle */}
                     </div>
 
                     <div className="show_incorrect">
@@ -104,12 +100,14 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
 
                     <div className="quiz_answer">
                         {renderAns.map( (el,idx) => {
-                            if (idx % 2 === 0) return el
+                            if (idx % 2 === 0) {return el}
+                            else {return null}
                         })}
                     </div>
                     <div className="quiz_answer">
                         {renderAns.map( (el,idx) => {
-                            if (idx % 2 !== 0) return el
+                            if (idx % 2 !== 0) {return el}
+                            else {return null}
                         })}
                     </div>
                 </div>
