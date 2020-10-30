@@ -6,10 +6,10 @@ var data = require('../../util/Apprentice_TandemFor400_Data.json')
 const Quiz = ({addPoint, setGameOver, setTotal}) => {
     const [curNum, setNum] = useState(0);
     const [answer, setAnswer] = useState([]);
+    setTotal(data.length)
 
    
     useEffect( ()=> {
-    
         if (curNum >= data.length) {
             setGameOver()
             setNum(0)
@@ -19,8 +19,7 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
         // setAnimation(false)
         randomize();
     }, [curNum])
-    // let renderAns = []
-    setTotal(data.length)
+    
     let renderAns = answer.map( (el,idx) => {
         return (
                 <div onClick={ e => submitAnswer(e)}
@@ -29,7 +28,7 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
                 key={idx}
                 data-answer={el}
                 >  
-                    {idx+1}  {el}
+                {idx+1})  {el}
                 </div>
         )
     })
@@ -45,31 +44,60 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
         setAnswer(result)
     }
 
-    const submitAnswer = (e) => {
-       
+    // const submitAnswer = async = (e) => {
+    async function submitAnswer(e) {
         let result = (e.target.dataset.answer === data[curNum].correct) 
         if (result) {
+            renderCorrect("correct")
             e.target.classList.add("correct_answer")
-           
+            e.target.onanimationend = () => {
+                e.target.classList.remove("correct_answer")
+                setNum(curNum+1)
+            }
             addPoint();
         } else {
+            let correct = showCorrect()
+            renderCorrect("incorrect")
+            correct.classList.add("correct_answer")
             e.target.classList.add("incorrect_answer");
+            e.target.onanimationend = () => {
+                correct.classList.remove("correct_answer")
+                e.target.classList.remove("incorrect_answer")
+                setNum(curNum+1)
+            }
         }
-        // setAnimation(true)
-        
-        
-        setNum(curNum+1);
-        
     }
 
+    const showCorrect = () => {
+        let ans = document.getElementsByClassName("answer_button")
+        for (let i = 0; i < ans.length; i++) {
+            if (ans[i].dataset.answer === data[curNum].correct) {
+                return ans[i]
+            }
+        }
+    }
 
+    // render the "O" and "X" on question box after user clicks answer
+    const renderCorrect = (str) => {
+        let showCorrect = document.getElementsByClassName(`show_${str}`)[0]
+        showCorrect.style.display = "block";
+        showCorrect.onanimationend = () => {
+            showCorrect.style.display = "none";
+        }
+    }
 
 
     const field = () => {
         return (
             <div className="quiz_container_2">
                 <div className="quiz_question">
-                
+                    <div className="show_correct">
+                        
+                    </div>
+
+                    <div className="show_incorrect">
+                        X
+                    </div>
                     {data[curNum].question}
                 </div>
                 <div className="answer_container">
@@ -85,7 +113,7 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
                         })}
                     </div>
                 </div>
-                
+               
             </div>
         )
     }
@@ -94,7 +122,9 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
         <div className="quiz_container_1">
             {curNum < data.length ? field() : null}
     
-
+            <div className="question_number">
+                     Question #{curNum+1}
+            </div>
         </div>
     )
 }

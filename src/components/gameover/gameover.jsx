@@ -7,7 +7,11 @@ const GameOver = ({score, restart, total}) => {
             <div className="game_over_heading">
                 Game Over 
             </div>
+            <div>
+                    Score:
+                </div>
             <div className="game_over_score">
+               
                 <div className="game_over_player">
                     {score}
                 </div>/{total}
