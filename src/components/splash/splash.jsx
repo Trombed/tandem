@@ -9,8 +9,11 @@ const Splash = ({setQuiz}) => {
             <div
                 className="start_button" 
                 onClick={ () => setQuiz(true)}>
-                Start Quiz
+                
+                START
             </div>
+            
+
         </div>
     )
 
