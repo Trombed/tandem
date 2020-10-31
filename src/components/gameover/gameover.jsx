@@ -1,20 +1,17 @@
 import React from 'react';
 import './style.css'
-const GameOver = ({score, restart, total}) => {
+const GameOver = ({score, restart, maxScore}) => {
 
     return (
         <div className="game_over">
             <div className="game_over_heading">
-                Game Over 
+                Score
             </div>
-            <div>
-                    Score:
-                </div>
             <div className="game_over_score">
                
                 <div className="game_over_player">
                     {score}
-                </div>/{total}
+                </div>/{maxScore}
             </div>
             <div onClick={restart}
                 className="game_over_button"

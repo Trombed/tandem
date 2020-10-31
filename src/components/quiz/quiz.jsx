@@ -1,30 +1,28 @@
-import React, {useState, useEffect} from 'react'
-import './style.css'
-var data = require('../../util/Apprentice_TandemFor400_Data.json')
+import React, {useState, useEffect} from 'react';
+import './style.css';
+// var array = require('../../util/Apprentice_TandemFor400_Data.json');
 
 
-const Quiz = ({addPoint, setGameOver, setTotal}) => {
-    const [curNum, setNum] = useState(0);
+const Quiz = ({addPoint, setGameOver, array}) => {
+    const [curNum, setNum] = useState(1);
     const [answer, setAnswer] = useState([]);
-    setTotal(data.length)
+    const [data, setData] = useState(array);
+    const [animating, setAnimating] = useState(false)
 
-   
+
     useEffect( ()=> {
-        if (curNum >= data.length) {
-            setGameOver()
-            setNum(0)
-            return;
-        };
-   
+
+        if (!data.length) return setGameOver(true)
         //randomize answer array
-        let result = [data[curNum].correct, ...data[curNum].incorrect]
+        let result = [data[0].correct, ...data[0].incorrect]
         for (let i = result.length-1; i >= 0; i--) {
             let j = Math.floor(Math.random() * (i+1));
-            
             [result[i], result[j]] = [result[j], result[i]]
         }
+   
+
         setAnswer(result)
-    }, [curNum])
+    }, [data])
     
     let renderAns = answer.map( (el,idx) => {
         return (
@@ -41,16 +39,19 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
 
 
     // const submitAnswer = async = (e) => {
-    async function submitAnswer(e) {
-        let result = (e.target.dataset.answer === data[curNum].correct) 
+    async function submitAnswer(e, index) {
+   
+        if (animating) return;
+        setAnimating(true)
+        let result = (e.target.dataset.answer === data[0].correct)
         if (result) {
             renderCorrect("correct")
             e.target.classList.add("correct_answer")
             e.target.onanimationend = () => {
                 e.target.classList.remove("correct_answer")
-                setNum(curNum+1)
+                setData(data.filter( (el, idx) => idx !== 0))
+                addPoint();
             }
-            addPoint();
         } else {
             let correct = showCorrect()
             renderCorrect("incorrect")
@@ -59,15 +60,18 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
             e.target.onanimationend = () => {
                 correct.classList.remove("correct_answer")
                 e.target.classList.remove("incorrect_answer")
+                
                 setNum(curNum+1)
+                setData(data.filter( (el, idx) => idx !== 0))
             }
         }
+        setNum(curNum+1)
     }
 
     const showCorrect = () => {
         let ans = document.getElementsByClassName("answer_button")
         for (let i = 0; i < ans.length; i++) {
-            if (ans[i].dataset.answer === data[curNum].correct) {
+            if (ans[i].dataset.answer === data[0].correct) {
                 return ans[i]
             }
         }
@@ -79,6 +83,7 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
         showCorrect.style.display = "block";
         showCorrect.onanimationend = () => {
             showCorrect.style.display = "none";
+            setAnimating(false)
         }
     }
 
@@ -87,17 +92,16 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
         return (
             <div className="quiz_container_2">
                 <div className="quiz_question">
+
                     <div className="show_correct">
                       {/* using css to show circle */}
                     </div>
-
                     <div className="show_incorrect">
                         X
                     </div>
-                    {data[curNum].question}
+                    {data[0].question}
                 </div>
                 <div className="answer_container">
-
                     <div className="quiz_answer">
                         {renderAns.map( (el,idx) => {
                             if (idx % 2 === 0) {return el}
@@ -118,14 +122,14 @@ const Quiz = ({addPoint, setGameOver, setTotal}) => {
 
     return (
         <div className="quiz_container_1">
-            {curNum < data.length ? field() : null}
+            {data.length ? field() : null}
     
             <div className="question_number">
-                     Question #{curNum+1}
+                     Question #{curNum}
             </div>
         </div>
     )
-}
+};
 
 
 
