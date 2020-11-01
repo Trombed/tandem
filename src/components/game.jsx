@@ -10,7 +10,7 @@ const Game = () => {
     const [data, setData] = useState([])
     const [load, setLoad] = useState(false)
     const [curNum, setNum] = useState(0)
-    const numQuest = 10
+    const numQuest = 10 //set number of questions to quiz
     
 
     // on mount randomize 10 questions from json file
@@ -59,7 +59,7 @@ const Game = () => {
     return (
         <div className="game_div">
             {
-            !load ? "Loading Question" : 
+            !load ? "Loadiccççng Question" : 
                 gameOver ?
                 <GameOver 
                     score={score} 

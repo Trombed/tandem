@@ -6,12 +6,11 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
 
     const [answer, setAnswer] = useState([]);
     const [animating, setAnimating] = useState(false);
-    const [btnPress, setBtnPress] = useState(false)
 
     
     // shuffle answer when data gets first loaded
     useEffect( ()=> {
-        randomize()
+        randomize();
     }, [data]);
 
     // shuffle answer when progress to next answer
@@ -34,19 +33,18 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
     // mapping of answer array while setting dataset for each answer
     let renderAns = answer.map( (el,idx) => {
         return (
-                <div onClick={ e => submitAnswer(e.target)}
-                    className={`answer_button`} 
-                    key={idx}
-                    data-answer={el}
-                >  
-                    {idx+1})  {el}
-                </div>
+            <div onClick={ e => submitAnswer(e.target)}
+                className={`answer_button`} 
+                key={idx}
+                data-answer={el}
+            >  
+                    {el}
+            </div>
         )
     });
 
 
-    async function submitAnswer(e) {
-        console.log(e)
+    const submitAnswer = (e) => {
         // if animation is running user should not be able to click;
         if (animating) return;
         // set animation to true;
@@ -57,7 +55,7 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
             e.classList.add("correct_answer")
             setTimeout(() => {
                 setNum()
-            }, 1200);
+            }, 1250);
             e.onanimationend = () => {
                 e.classList.remove("correct_answer")
                 addPoint();
@@ -70,7 +68,7 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
             e.classList.add("incorrect_answer");
             setTimeout(() => {
                 setNum()
-            }, 1200);
+            }, 1250);
             e.onanimationend = () => {
                 correct.classList.remove("correct_answer")
                 e.classList.remove("incorrect_answer")
@@ -125,7 +123,6 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
                         })}
                     </div>
                 </div>
-               
             </div>
         )
     };
@@ -133,7 +130,6 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
     return (
         <div className="quiz_container_1">
             {data[curNum] ? field() : null}
-    
             <div className="question_number">
                 {curNum < numQuest  ? ` Question #${curNum+1}` : null }
             </div>

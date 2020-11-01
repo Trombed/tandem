@@ -6,6 +6,7 @@
     justify-content: center;
     background-color: #FF4DF0;
     border-radius: 10px;
+    border: 3px solid black;
 }
 
 
@@ -31,6 +32,8 @@
     color: white;
     padding: 10px;
     border-radius: 5px;
+    border: 3px solid black;
+    text-align: center;
 }
 
 .answer_container {
@@ -57,13 +60,11 @@
     margin: 1vw 2.5vh;
     text-transform: uppercase;
     border: 3px solid black;
+    text-align: center;
 }
 
-
-
-
-
 .answer_button:hover {
+    border: 3px solid #9D4DFF;
     background-color: rgb(92, 204, 180);
 }
 
@@ -95,8 +96,6 @@
     60% {background-color: rgb(130, 255, 146);}
     80% {background-color: rgb(72, 228, 92);}
     100% {background-color: rgb(58, 184, 74);}
-
-
 }
 
 .question_number {
@@ -111,9 +110,10 @@
     background-color: white;
     text-align: center;
     background-color: #9D4DFF;
-    border: 4px solid #045DED;
+    border: 3px solid black;
     color: white;
 }
+
 .show_correct {
     position: absolute;
     z-index: 10;
@@ -153,3 +153,5 @@
     80% {color: rgb(196, 2, 2);}
     100% {color: rgb(148, 0, 0);}
 }
+
+
