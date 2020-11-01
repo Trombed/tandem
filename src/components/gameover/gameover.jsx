@@ -13,7 +13,7 @@ const GameOver = ({score, restart, maxScore}) => {
                     {score}
                 </div>/{maxScore}
             </div>
-            <div onClick={restart}
+            <div onClick={() => restart()}
                 className="game_over_button"
             >
 

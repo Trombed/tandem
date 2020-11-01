@@ -1,32 +1,40 @@
 import React, {useState, useEffect} from 'react';
 import './style.css';
-// var array = require('../../util/Apprentice_TandemFor400_Data.json');
 
 
-const Quiz = ({addPoint, setGameOver, array}) => {
-    const [curNum, setNum] = useState(1);
+const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) => {
+
     const [answer, setAnswer] = useState([]);
-    const [data, setData] = useState(array);
-    const [animating, setAnimating] = useState(false)
+    const [animating, setAnimating] = useState(false);
+    const [btnPress, setBtnPress] = useState(false)
 
-
+    
+    // shuffle answer when data gets first loaded
     useEffect( ()=> {
+        randomize()
+    }, [data]);
 
-        if (!data.length) return setGameOver(true)
-        //randomize answer array
-        let result = [data[0].correct, ...data[0].incorrect]
+    // shuffle answer when progress to next answer
+    useEffect( () => {
+        randomize()
+    }, [curNum]);
+
+    // randomize answer array or exit if game should not be started
+    const randomize = () => {
+        if (curNum >= numQuest) return setGameOver(true);
+        if (!data.length) return;
+        let result = [data[curNum].correct, ...data[curNum].incorrect];
         for (let i = result.length-1; i >= 0; i--) {
             let j = Math.floor(Math.random() * (i+1));
             [result[i], result[j]] = [result[j], result[i]]
-        }
-   
-
-        setAnswer(result)
-    }, [data])
+        };
+        setAnswer(result);
+    };
     
+    // mapping of answer array while setting dataset for each answer
     let renderAns = answer.map( (el,idx) => {
         return (
-                <div onClick={ e => submitAnswer(e)}
+                <div onClick={ e => submitAnswer(e.target)}
                     className={`answer_button`} 
                     key={idx}
                     data-answer={el}
@@ -34,44 +42,46 @@ const Quiz = ({addPoint, setGameOver, array}) => {
                     {idx+1})  {el}
                 </div>
         )
-    })
+    });
 
 
-
-    // const submitAnswer = async = (e) => {
-    async function submitAnswer(e, index) {
-   
+    async function submitAnswer(e) {
+        console.log(e)
+        // if animation is running user should not be able to click;
         if (animating) return;
-        setAnimating(true)
-        let result = (e.target.dataset.answer === data[0].correct)
+        // set animation to true;
+        setAnimating(true);
+        let result = (e.dataset.answer === data[curNum].correct);
         if (result) {
             renderCorrect("correct")
-            e.target.classList.add("correct_answer")
-            e.target.onanimationend = () => {
-                e.target.classList.remove("correct_answer")
-                setData(data.filter( (el, idx) => idx !== 0))
+            e.classList.add("correct_answer")
+            setTimeout(() => {
+                setNum()
+            }, 1200);
+            e.onanimationend = () => {
+                e.classList.remove("correct_answer")
                 addPoint();
             }
-        } else {
+        } 
+        else {
             let correct = showCorrect()
-            renderCorrect("incorrect")
             correct.classList.add("correct_answer")
-            e.target.classList.add("incorrect_answer");
-            e.target.onanimationend = () => {
+            renderCorrect("incorrect")
+            e.classList.add("incorrect_answer");
+            setTimeout(() => {
+                setNum()
+            }, 1200);
+            e.onanimationend = () => {
                 correct.classList.remove("correct_answer")
-                e.target.classList.remove("incorrect_answer")
-                
-                setNum(curNum+1)
-                setData(data.filter( (el, idx) => idx !== 0))
+                e.classList.remove("incorrect_answer")
             }
-        }
-        setNum(curNum+1)
-    }
+        };    
+    };
 
     const showCorrect = () => {
         let ans = document.getElementsByClassName("answer_button")
         for (let i = 0; i < ans.length; i++) {
-            if (ans[i].dataset.answer === data[0].correct) {
+            if (ans[i].dataset.answer === data[curNum].correct) {
                 return ans[i]
             }
         }
@@ -92,16 +102,16 @@ const Quiz = ({addPoint, setGameOver, array}) => {
         return (
             <div className="quiz_container_2">
                 <div className="quiz_question">
-
                     <div className="show_correct">
                       {/* using css to show circle */}
                     </div>
                     <div className="show_incorrect">
                         X
                     </div>
-                    {data[0].question}
+                    {data[curNum].question}
                 </div>
                 <div className="answer_container">
+                    {/* generate two rows of answer boxes */}
                     <div className="quiz_answer">
                         {renderAns.map( (el,idx) => {
                             if (idx % 2 === 0) {return el}
@@ -118,21 +128,17 @@ const Quiz = ({addPoint, setGameOver, array}) => {
                
             </div>
         )
-    }
+    };
 
     return (
         <div className="quiz_container_1">
-            {data.length ? field() : null}
+            {data[curNum] ? field() : null}
     
             <div className="question_number">
-                     Question #{curNum}
+                {curNum < numQuest  ? ` Question #${curNum+1}` : null }
             </div>
         </div>
-    )
+    );
 };
 
-
-
-
-
-export default Quiz
+export default Quiz;
