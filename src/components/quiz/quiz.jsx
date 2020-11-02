@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import './style.css';
-
+import QuestionNumber from './questionNumber/questionNumber'
 
 const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) => {
     const [correctSound] = useState(new Audio('/correct.mp3'))
     const [incorrectSound] = useState(new Audio('/wrong.mp3'))
     const [answer, setAnswer] = useState([]);
     const [animating, setAnimating] = useState(false);
+    const [muted, setMuted] = useState(false)
 
     correctSound.volume = 0.2
     incorrectSound.volume = 0.2
+
     // shuffle answer when data gets first loaded
     useEffect( ()=> {
         randomize();
@@ -47,6 +49,10 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
         )
     });
 
+    const toggleMute = () => {
+        setMuted(!muted)
+    }
+
 
     const submitAnswer = (e) => {
         // if animation is running user should not be able to click;
@@ -57,7 +63,7 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
         if (result) {
             renderCorrect("correct")
             e.classList.add("correct_answer")
-             correctSound.play()
+            if (!muted) {correctSound.play()};
             setTimeout(() => {
                 setNum()
                 correctSound.currentTime = 0
@@ -71,7 +77,7 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
         else {
             let correct = showCorrect()
             correct.classList.add("correct_answer")
-            incorrectSound.play()
+            if (!muted) {incorrectSound.play()};
             renderCorrect("incorrect")
             e.classList.add("incorrect_answer");
             setTimeout(() => {
@@ -141,7 +147,11 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
         <div className="quiz_container_1">
             {data[curNum] ? field() : null}
             <div className="question_number">
-                {curNum < numQuest  ? ` Question #${curNum+1}` : null }
+                {curNum < numQuest  ? <QuestionNumber number={curNum} 
+                muted={muted}
+                toggleMute={toggleMute}
+                /> 
+                : null }
             </div>
         </div>
     );
