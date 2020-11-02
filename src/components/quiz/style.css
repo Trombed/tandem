@@ -155,3 +155,23 @@
 }
 
 
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+    .game_div {
+        width: 95vw;
+    }
+    .question_number {
+        top: 10%;
+        left: 2%;
+        transform: none;
+    }
+    .quiz_container_1 {
+      width: 100%;
+    }
+    .answer_button {
+        font-size: 0.8em;
+    }
+}
+
