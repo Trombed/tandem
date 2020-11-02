@@ -51,6 +51,7 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
 
     const toggleMute = () => {
         setMuted(!muted)
+        console.log(muted)
     }
 
 
@@ -66,8 +67,7 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
             if (!muted) {correctSound.play()};
             setTimeout(() => {
                 setNum()
-                correctSound.currentTime = 0
-                correctSound.pause() 
+                resetAudio()
             }, 1250);
             e.onanimationend = () => {
                 e.classList.remove("correct_answer")
@@ -81,9 +81,8 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
             renderCorrect("incorrect")
             e.classList.add("incorrect_answer");
             setTimeout(() => {
-                incorrectSound.currentTime = 0
-                incorrectSound.pause()
                 setNum()
+                resetAudio()
             }, 1250);
             e.onanimationend = () => {
                 correct.classList.remove("correct_answer")
@@ -91,6 +90,14 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
             }
         };    
     };
+
+    //reset Audio in order to play again, audio length are also longer than animation times
+    const resetAudio = () => {
+        correctSound.currentTime = 0
+        incorrectSound.currentTime = 0
+        correctSound.pause() 
+        incorrectSound.pause()
+    }
 
     const showCorrect = () => {
         let ans = document.getElementsByClassName("answer_button")

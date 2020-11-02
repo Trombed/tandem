@@ -4,15 +4,10 @@ import './style.css'
 const QuestionNumber = ({number, muted, toggleMute}) => {
     
     const showMute = () => {
-        if (muted) {
-            return (
+      return muted ?
                 <i className="fas fa-volume-mute"></i>
-            )
-        } else {
-            return (
+                :
                 <i className="fas fa-volume-up"></i>
-            )
-        }
     }
     
     return (
@@ -23,7 +18,7 @@ const QuestionNumber = ({number, muted, toggleMute}) => {
                 {showMute()}
             </div>
             <div>
-                Question # {number+1}
+                Question #{number+1}
             </div>
         </div>
     )
