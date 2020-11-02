@@ -55,11 +55,19 @@ const Game = () => {
         }
     }
 
+    const loading = () => {
+        return (
+            <div className="loading">
+                Loading
+            </div>
+        )
+    }
+
 
     return (
         <div className="game_div">
             {
-            !load ? "Loadiccççng Question" : 
+            !load ? loading() : 
                 gameOver ?
                 <GameOver 
                     score={score} 
