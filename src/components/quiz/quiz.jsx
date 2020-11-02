@@ -14,6 +14,7 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
     }, [data]);
 
     // shuffle answer when progress to next answer
+
     useEffect( () => {
         randomize()
     }, [curNum]);

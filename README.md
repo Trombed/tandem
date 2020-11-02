@@ -1,7 +1,7 @@
 # [Live Site](https://eric-tandem-quiz.herokuapp.com/)
 
 ## Installation
-
+This project is built with Create-React-App to install please have 
 
 1. Clone the repository. ```git clone https://github.com/Trombed/tandem.git```
 2. run ```npm install``` to install dependencies for the app.
