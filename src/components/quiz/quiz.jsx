@@ -3,14 +3,17 @@ import './style.css';
 
 
 const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) => {
-
+    const [correctSound] = useState(new Audio('/correct.mp3'))
+    const [incorrectSound] = useState(new Audio('/wrong.mp3'))
     const [answer, setAnswer] = useState([]);
     const [animating, setAnimating] = useState(false);
 
-    
+    correctSound.volume = 0.25
+    incorrectSound.volume = 0.25
     // shuffle answer when data gets first loaded
     useEffect( ()=> {
         randomize();
+       
     }, [data]);
 
     // shuffle answer when progress to next answer
@@ -54,8 +57,11 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
         if (result) {
             renderCorrect("correct")
             e.classList.add("correct_answer")
+             correctSound.play()
             setTimeout(() => {
                 setNum()
+                correctSound.currentTime = 0
+                correctSound.pause() 
             }, 1250);
             e.onanimationend = () => {
                 e.classList.remove("correct_answer")
@@ -65,9 +71,12 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
         else {
             let correct = showCorrect()
             correct.classList.add("correct_answer")
+            incorrectSound.play()
             renderCorrect("incorrect")
             e.classList.add("incorrect_answer");
             setTimeout(() => {
+                incorrectSound.currentTime = 0
+                incorrectSound.pause()
                 setNum()
             }, 1250);
             e.onanimationend = () => {

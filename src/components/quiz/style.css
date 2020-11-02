@@ -167,11 +167,20 @@
         left: 2%;
         transform: none;
     }
+    .quiz_question {
+        font-size: 2em;
+        height: 65%;
+    }
     .quiz_container_1 {
       width: 100%;
     }
     .answer_button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 0.8em;
+        min-height: 30%;
+        min-width: 46%;
     }
 }
 
