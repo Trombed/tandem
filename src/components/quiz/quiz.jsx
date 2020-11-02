@@ -8,8 +8,8 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
     const [answer, setAnswer] = useState([]);
     const [animating, setAnimating] = useState(false);
 
-    correctSound.volume = 0.25
-    incorrectSound.volume = 0.25
+    correctSound.volume = 0.2
+    incorrectSound.volume = 0.2
     // shuffle answer when data gets first loaded
     useEffect( ()=> {
         randomize();
