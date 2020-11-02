@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import './style.css';
 import QuestionNumber from './questionNumber/questionNumber'
 
@@ -12,20 +12,9 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
     correctSound.volume = 0.2
     incorrectSound.volume = 0.2
 
-    // shuffle answer when data gets first loaded
-    useEffect( ()=> {
-        randomize();
-       
-    }, [data]);
-
-    // shuffle answer when progress to next answer
-
-    useEffect( () => {
-        randomize()
-    }, [curNum]);
 
     // randomize answer array or exit if game should not be started
-    const randomize = () => {
+    const randomize = useCallback(() => {
         if (curNum >= numQuest) return setGameOver(true);
         if (!data.length) return;
         let result = [data[curNum].correct, ...data[curNum].incorrect];
@@ -34,8 +23,12 @@ const Quiz = ({addPoint, setGameOver, data, setData, curNum, setNum, numQuest}) 
             [result[i], result[j]] = [result[j], result[i]]
         };
         setAnswer(result);
-    };
-    
+    }, [curNum, data, numQuest, setGameOver]);
+
+    useEffect( () => {
+        randomize()
+    }, [randomize]);
+
     // mapping of answer array while setting dataset for each answer
     let renderAns = answer.map( (el,idx) => {
         return (

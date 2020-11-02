@@ -10,6 +10,7 @@ This project is built with Create-React-App to install please have npm installed
 
 
 ## Issues
+11/01 - I was able to fix the useEffect dependencies error by using useCallback.
 
 One issue that I ran into and still trying to solve is the dependency array inside useEffect. As I am trying to update a state after a particular rerender, useEffect calls a function which depends on multiple states.  People have suggested to ignore this by adding eslint-disable but this might not be good practice. 
 
